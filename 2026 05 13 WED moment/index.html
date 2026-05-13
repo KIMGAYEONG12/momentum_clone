@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Momentum 스타일 시계</title>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        width: 100%;
+        height: 100vh;
+        overflow: hidden;
+
+        font-family: Arial, sans-serif;
+        color: white;
+
+        background-image: url("star.jpg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+      }
+
+      /* 어두운 배경 */
+      body::before {
+        content: "";
+
+        position: absolute;
+        inset: 0;
+
+        background: rgba(0, 0, 0, 0.3);
+      }
+
+      /* 전체 */
+      .wrapper {
+        position: relative;
+        z-index: 1;
+
+        width: 100%;
+        height: 100vh;
+      }
+
+      /* 상단 */
+      .top-bar {
+        width: 100%;
+
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        padding: 20px 30px;
+
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+      }
+
+      /* 왼쪽 메뉴 */
+      .left-menu {
+        display: flex;
+        gap: 30px;
+      }
+
+      .menu-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        cursor: pointer;
+
+        font-size: 14px;
+
+        transition: 0.2s;
+      }
+
+      .menu-item:hover {
+        transform: scale(1.1);
+      }
+
+      .menu-item span {
+        font-size: 28px;
+        margin-bottom: 5px;
+      }
+
+      /* 오른쪽 */
+      .right-info {
+        display: flex;
+        align-items: flex-start;
+        gap: 30px;
+      }
+
+      /* Focus */
+      .focus-box {
+        text-align: center;
+      }
+
+      /* 원형 아이콘 */
+      .focus-circle {
+        width: 34px;
+        height: 34px;
+
+        border: 5px solid rgba(255, 255, 255, 0.25);
+        border-top: 5px solid white;
+        border-radius: 50%;
+
+        margin: 0 auto 6px auto;
+      }
+
+      /* 0m */
+      #focusTime {
+        font-size: 38px;
+        font-weight: bold;
+        line-height: 1;
+      }
+
+      .focus-text {
+        margin-top: 3px;
+        font-size: 14px;
+      }
+
+      /* 날씨 */
+      .weather-area {
+        text-align: right;
+      }
+
+      .weather-box {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .weather-icon {
+        font-size: 24px;
+      }
+
+      .weather {
+        font-size: 30px;
+        font-weight: bold;
+      }
+
+      .location {
+        margin-top: 4px;
+        font-size: 14px;
+      }
+
+      /* 중앙 */
+      .center-box {
+        width: 100%;
+        height: 100vh;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        text-align: center;
+      }
+
+      /* 시계 */
+      #clock {
+        font-size: clamp(120px, 16vw, 260px);
+        font-weight: bold;
+
+        line-height: 1;
+
+        text-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+      }
+
+      /* 인사말 */
+      #greetText {
+        margin-top: 20px;
+
+        font-size: clamp(30px, 4vw, 70px);
+        font-weight: bold;
+
+        text-shadow: 0 0 12px rgba(0, 0, 0, 0.7);
+      }
+
+      /* 질문 */
+      #question {
+        margin-top: 60px;
+
+        font-size: clamp(22px, 2.8vw, 45px);
+      }
+
+      .question-line {
+        border-bottom: 3px solid white;
+        padding-bottom: 14px;
+      }
+
+      /* 명언 */
+      #quote {
+        width: 100%;
+
+        position: absolute;
+        bottom: 30px;
+        left: 0;
+
+        text-align: center;
+
+        font-size: 18px;
+
+        text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+      }
+
+      /* 모바일 */
+      @media (max-width: 768px) {
+        .top-bar {
+          padding: 15px;
+        }
+
+        .left-menu {
+          gap: 20px;
+        }
+
+        .menu-item span {
+          font-size: 22px;
+        }
+
+        #focusTime {
+          font-size: 30px;
+        }
+
+        .weather {
+          font-size: 24px;
+        }
+
+        #question {
+          margin-top: 40px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="wrapper">
+      <!-- 상단 -->
+      <div class="top-bar">
+        <!-- 왼쪽 -->
+        <div class="left-menu">
+          <!-- 링크 -->
+          <div class="menu-item" onclick="goToSchoolSite()">
+            <span>🔗</span>
+            <div>Links</div>
+          </div>
+
+          <!-- Focus -->
+          <div class="menu-item">
+            <span>🎯</span>
+            <div>Focus</div>
+          </div>
+        </div>
+
+        <!-- 오른쪽 -->
+        <div class="right-info">
+          <!-- Focused Today -->
+          <div class="focus-box">
+            <!-- 이미지처럼 원형 -->
+            <div class="focus-circle"></div>
+
+            <!-- 시간 -->
+            <div id="focusTime">0m</div>
+
+            <div class="focus-text">Focused Today</div>
+          </div>
+
+          <!-- 날씨 -->
+          <div class="weather-area">
+            <div class="weather-box">
+              <div class="weather-icon" id="weatherIcon">☀️</div>
+
+              <div class="weather" id="weather">24°</div>
+            </div>
+
+            <div class="location">Yongsan-gu</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 중앙 -->
+      <div class="center-box">
+        <div id="clock">00:00</div>
+
+        <div id="greetText">로딩 중...</div>
+
+        <div id="question">
+          <span class="question-line"> What is your main goal for today? </span>
+        </div>
+      </div>
+
+      <!-- 하단 명언 -->
+      <div id="quote"></div>
+    </div>
+
+    <script>
+      // 영진직업전문학교 이동
+      function goToSchoolSite() {
+        window.location.href = "https://yjjob.or.kr/";
+      }
+
+      // 시계
+      function updateClock() {
+        const now = new Date();
+
+        let hours = now.getHours();
+        let minutes = now.getMinutes();
+
+        minutes = String(minutes).padStart(2, "0");
+
+        document.getElementById("clock").textContent = `${hours}:${minutes}`;
+
+        // 인사말
+        let greeting = "";
+
+        if (hours < 12) {
+          greeting = "Good morning, 닉네임.";
+        } else if (hours < 18) {
+          greeting = "Good afternoon, 닉네임.";
+        } else {
+          greeting = "Good evening, 닉네임.";
+        }
+
+        document.getElementById("greetText").textContent = greeting;
+      }
+
+      updateClock();
+
+      setInterval(updateClock, 1000);
+
+      // 명언
+      function showRandomQuote() {
+        const quotes = [
+          "오늘 걷지 않으면 내일은 뛰어야 한다.",
+          "성공은 포기하지 않는 사람의 것이다.",
+          "작은 노력들이 큰 변화를 만든다.",
+          "어제보다 더 나은 오늘을 만들자.",
+          "꿈은 행동하는 순간 현실이 된다.",
+        ];
+
+        const randomIndex = Math.floor(Math.random() * quotes.length);
+
+        document.getElementById("quote").textContent = quotes[randomIndex];
+      }
+
+      showRandomQuote();
+
+      setInterval(showRandomQuote, 5000);
+
+      // Focus 시간
+      let focusedMinutes = 0;
+
+      function updateFocusTime() {
+        document.getElementById("focusTime").textContent = `${focusedMinutes}m`;
+
+        focusedMinutes++;
+      }
+
+      updateFocusTime();
+
+      setInterval(updateFocusTime, 60000);
+
+      // 날씨
+      const temperature = 24;
+      const weatherType = "sunny";
+
+      document.getElementById("weather").textContent = `${temperature}°`;
+
+      let icon = "☀️";
+
+      if (weatherType === "cloudy") {
+        icon = "☁️";
+      } else if (weatherType === "rain") {
+        icon = "🌧️";
+      } else if (weatherType === "snow") {
+        icon = "❄️";
+      }
+
+      document.getElementById("weatherIcon").textContent = icon;
+    </script>
+  </body>
+</html>

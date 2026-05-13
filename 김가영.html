@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>현재 시간</title>
+    <style>
+      html,
+      body {
+        height: 98%;
+      }
+      td {
+        text-align: center;
+      }
+      h1 {
+        color: burlywood;
+        font-weight: bold;
+      }
+      p {
+        height: 40px;
+        font-size: 30px;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <table width="100%" height="100%">
+      <tr>
+        <td>
+          <h1>현재 시간</h1>
+          <p id="nowTime"></p>
+        </td>
+      </tr>
+    </table>
+  </body>
+  <script>
+    /**
+     * 현재시간 가져오기
+     * 1. Date객체 생성
+     * 2. getHours(),getMinutes(),getSeconds()으로 시,분,초 가져오기
+     * 시간이 한자리수일경우 10의 자리에 0 붙이기
+     * p태그(id="nowTime")을 가져와서 시간을 보여주기
+     */
+    // 현재 시간 가져오기 & 1. Date 객체 생성
+    function updateTime() {
+      // 1. Date 객체 생성
+      const now = new Date();
+
+      // 2. 시, 분, 초 가져오기
+      let hours = now.getHours();
+      let minutes = now.getMinutes();
+      let seconds = now.getSeconds();
+
+      // 3. 한 자리수면 0 붙이기
+      hours = hours < 10 ? "0" + hours : hours;
+      minutes = minutes < 10 ? "0" + minutes : minutes;
+      seconds = seconds < 10 ? "0" + seconds : seconds;
+
+      // 4. 시간 문자열 만들기
+      const timeString = `${hours}:${minutes}:${seconds}`;
+
+      // 5. 화면에 출력
+      document.getElementById("nowTime").innerText = timeString;
+    }
+
+    // 처음 한 번 실행
+    updateTime();
+
+    // 1초마다 반복 실행 (실시간)
+    setInterval(updateTime, 1000);
+  </script>
+</html>
