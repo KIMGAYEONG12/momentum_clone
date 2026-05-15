@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Momentum 스타일 시계</title>
+    <title>Momentum 시계화면 꾸미기</title>
 
     <style>
       * {
@@ -24,6 +24,9 @@
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
+
+        /* 추가 */
+        transition: background-image 1s ease-in-out;
       }
 
       /* 어두운 배경 */
@@ -163,11 +166,9 @@
 
       /* 시계 */
       #clock {
-        font-size: clamp(120px, 16vw, 260px);
+        font-size: clamp(60px, 10vw, 150px);
         font-weight: bold;
-
         line-height: 1;
-
         text-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
       }
 
@@ -191,6 +192,66 @@
       .question-line {
         border-bottom: 3px solid white;
         padding-bottom: 14px;
+      }
+      /* Todo 영역 */
+      .todo-input-wrapper {
+        position: relative;
+
+        width: 60%;
+
+        margin-top: 20px;
+      }
+
+      /* 입력창 */
+      #todoInput {
+        width: 100%;
+
+        background: none;
+
+        border: none;
+        border-bottom: 3px solid white;
+
+        color: white;
+
+        font-size: clamp(20px, 2.2vw, 36px);
+
+        text-align: center;
+
+        outline: none;
+
+        padding-bottom: 10px;
+      }
+
+      /* Todo List 글자 */
+      .todo-label {
+        position: absolute;
+
+        left: 50%;
+        top: 45%;
+
+        transform: translate(-50%, -50%);
+
+        font-size: clamp(18px, 2vw, 30px);
+
+        color: rgba(255, 255, 255, 0.7);
+
+        pointer-events: none;
+
+        transition: 0.3s;
+      }
+
+      /* 입력 시 숨김 */
+      #todoInput:focus + .todo-label,
+      #todoInput:not(:placeholder-shown) + .todo-label {
+        opacity: 0;
+      }
+
+      #todoText {
+        margin-top: 20px;
+
+        font-size: clamp(22px, 2.5vw, 42px);
+
+        font-weight: bold;
       }
 
       /* 명언 */
@@ -244,7 +305,7 @@
         <!-- 왼쪽 -->
         <div class="left-menu">
           <!-- 링크 -->
-          <div class="menu-item" onclick="goToSchoolSite()">
+          <div class="menu-item" onclick="goToGitHubSite()">
             <span>🔗</span>
             <div>Links</div>
           </div>
@@ -293,15 +354,165 @@
         </div>
       </div>
 
+      <!-- 이름 -->
+        <div id="nameContainer">
+          <span id="nameQuestion"> What is your </span>
+
+          <input
+            type="text"
+            id="nameInput"
+            placeholder="name?"
+            onkeypress="saveName(event)"
+          />
+
+          <p id="greetText" onclick="editName()" style="display: none"></p>
+        </div>
+
+        <!-- 질문 -->
+        <div id="question">What is your main goal for today?</div>
+
+        <!-- Todo -->
+        <div class="todo-input-wrapper">
+          <input
+            type="text"
+            id="todoInput"
+            placeholder=" "
+            onkeypress="handleTodo(event)"
+          />
+
+          <span class="todo-label"> Todo List </span>
+        </div>
+
+        <p id="todoText"></p>
+      </div>
+      
       <!-- 하단 명언 -->
       <div id="quote"></div>
     </div>
 
     <script>
-      // 영진직업전문학교 이동
-      function goToSchoolSite() {
-        window.location.href = "https://yjjob.or.kr/";
+      // 깃허브사이트 이동
+      function goToGitHubSite() {
+        window.location.href = "https://github.com/";
       }
+
+      /* 이름 */
+    function loadName() {
+
+      const savedName =
+        localStorage.getItem("username");
+
+      const questionText =
+        document.getElementById("nameQuestion");
+
+      const input =
+        document.getElementById("nameInput");
+
+      const greet =
+        document.getElementById("greetText");
+
+      if (savedName) {
+
+        questionText.style.display = "none";
+
+        input.style.display = "none";
+
+        greet.style.display = "block";
+
+        updateGreeting(savedName);
+
+      } else {
+
+        questionText.style.display = "inline";
+
+        input.style.display = "inline-block";
+
+        greet.style.display = "none";
+      }
+    }
+
+    function saveName(event) {
+
+      if (event.key === "Enter") {
+
+        const nameValue = event.target.value;
+
+        if (nameValue.trim() !== "") {
+
+          localStorage.setItem(
+            "username",
+            nameValue
+          );
+
+          loadName();
+        }
+      }
+    }
+
+    function editName() {
+
+      localStorage.removeItem("username");
+
+      loadName();
+
+      document
+        .getElementById("nameInput")
+        .focus();
+    }
+
+    function updateGreeting(name) {
+
+      const hours =
+        new Date().getHours();
+
+      let greeting = "";
+
+      if (hours < 12) {
+
+        greeting = "Good morning";
+
+      } else if (hours < 18) {
+
+        greeting = "Good afternoon";
+
+      } else {
+
+        greeting = "Good evening";
+      }
+
+      document.getElementById(
+        "greetText"
+      ).innerHTML =
+        `${greeting}, <span class="name-highlight">${name}</span>.`;
+    }
+
+      // 배경화면 자동 변경 추가
+
+      const backgroundImages = [
+        "star.jpg",
+        "starscloud.jpg",
+        "stars.jpg",
+        "japan.jpg",
+        "nightcity.jpg",
+        "tokyo.jpg",
+        "summer.jpg",
+        "osaka.jpg",
+      ];
+
+      let currentBackgroundIndex = 0;
+
+      function changeBackground() {
+        currentBackgroundIndex++;
+
+        if (currentBackgroundIndex >= backgroundImages.length) {
+          currentBackgroundIndex = 0;
+        }
+
+        document.body.style.backgroundImage = `url("${backgroundImages[currentBackgroundIndex]}")`;
+      }
+
+      // 5초마다 자동 변경
+      setInterval(changeBackground, 5000);
 
       // 시계
       function updateClock() {
@@ -335,11 +546,12 @@
       // 명언
       function showRandomQuote() {
         const quotes = [
-          "오늘 걷지 않으면 내일은 뛰어야 한다.",
-          "성공은 포기하지 않는 사람의 것이다.",
-          "작은 노력들이 큰 변화를 만든다.",
-          "어제보다 더 나은 오늘을 만들자.",
-          "꿈은 행동하는 순간 현실이 된다.",
+          "꿈을 계속 간직하고 있으면 반드시 실현할 때가 온다 - 괴테",
+          "시간은 말로써 나타낼 수 없을 만큼 멋진 만물으 소재이다 - 아널드 버넷",
+          "시간이 덜어주거나 부드럽게 해주지 않는 슬픔이란 하나도 없다 - 키케로",
+          "The only way to do great work is to love what you do (번역 : 위대한 일을 하는 유일한 방법은 당신이 하는 일을 사랑하는 것이다.) - Steave Jobs",
+          " 끔은 노력을 가능하게 만들고, 노력은 그 꿈을 가능하게 만든다. - 폴 포츠",
+          "포기하지 말고 희망을 잃지 말며 자신을 저버리지 말아라. - 크리스토퍼 리브",
         ];
 
         const randomIndex = Math.floor(Math.random() * quotes.length);
@@ -351,7 +563,7 @@
 
       setInterval(showRandomQuote, 5000);
 
-      // Focus 시간
+      // 집중 시간
       let focusedMinutes = 0;
 
       function updateFocusTime() {
@@ -364,6 +576,75 @@
 
       setInterval(updateFocusTime, 60000);
 
+      /* Todo */
+    function getTodo() {
+
+      let p =
+        document.getElementById("todoText");
+
+      let wrapper =
+        document.querySelector(".todo-input-wrapper");
+
+      let savedTodo =
+        localStorage.getItem("todo");
+
+      if (savedTodo) {
+
+        p.textContent = savedTodo;
+
+        p.style.display = "block";
+
+        wrapper.style.display = "none";
+
+      } else {
+
+        p.style.display = "none";
+
+        wrapper.style.display = "block";
+      }
+    }
+
+    function setTodo() {
+
+      let input =
+        document.getElementById("todoInput");
+
+      let todoValue =
+        input.value;
+
+      if (todoValue.trim() !== "") {
+
+        localStorage.setItem(
+          "todo",
+          todoValue
+        );
+
+        getTodo();
+      }
+    }
+
+    function handleTodo(event) {
+
+      if (event.key === "Enter") {
+        setTodo();
+      }
+    }
+
+    function resetTodo() {
+
+      localStorage.removeItem("todo");
+
+      document.getElementById(
+        "todoInput"
+      ).value = "";
+
+      getTodo();
+    }
+
+    loadName();
+
+    getTodo();
+    
       // 날씨
       const temperature = 24;
       const weatherType = "sunny";
