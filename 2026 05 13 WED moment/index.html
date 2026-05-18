@@ -25,11 +25,9 @@
         background-position: center;
         background-repeat: no-repeat;
 
-        /* 추가 */
         transition: background-image 1s ease-in-out;
       }
 
-      /* 어두운 배경 */
       body::before {
         content: "";
 
@@ -39,7 +37,6 @@
         background: rgba(0, 0, 0, 0.3);
       }
 
-      /* 전체 */
       .wrapper {
         position: relative;
         z-index: 1;
@@ -63,7 +60,6 @@
         align-items: flex-start;
       }
 
-      /* 왼쪽 메뉴 */
       .left-menu {
         display: flex;
         gap: 30px;
@@ -90,19 +86,16 @@
         margin-bottom: 5px;
       }
 
-      /* 오른쪽 */
       .right-info {
         display: flex;
         align-items: flex-start;
         gap: 30px;
       }
 
-      /* Focus */
       .focus-box {
         text-align: center;
       }
 
-      /* 원형 아이콘 */
       .focus-circle {
         width: 34px;
         height: 34px;
@@ -114,11 +107,9 @@
         margin: 0 auto 6px auto;
       }
 
-      /* 0m */
       #focusTime {
         font-size: 38px;
         font-weight: bold;
-        line-height: 1;
       }
 
       .focus-text {
@@ -126,7 +117,6 @@
         font-size: 14px;
       }
 
-      /* 날씨 */
       .weather-area {
         text-align: right;
       }
@@ -164,16 +154,14 @@
         text-align: center;
       }
 
-      /* 시계 */
       #clock {
         font-size: clamp(60px, 10vw, 150px);
         font-weight: bold;
-        line-height: 1;
+
         text-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
       }
 
-      /* 인사말 */
-      #greetText {
+      #mainGreeting {
         margin-top: 20px;
 
         font-size: clamp(30px, 4vw, 70px);
@@ -182,8 +170,7 @@
         text-shadow: 0 0 12px rgba(0, 0, 0, 0.7);
       }
 
-      /* 질문 */
-      #question {
+      .question-text {
         margin-top: 60px;
 
         font-size: clamp(22px, 2.8vw, 45px);
@@ -193,16 +180,40 @@
         border-bottom: 3px solid white;
         padding-bottom: 14px;
       }
-      /* Todo 영역 */
+
+      /* 이름 */
+      #nameContainer {
+        margin-top: 30px;
+        text-align: center;
+      }
+
+      #nameInput {
+        background: none;
+        border: none;
+        border-bottom: 2px solid white;
+
+        color: white;
+
+        font-size: 28px;
+        text-align: center;
+
+        outline: none;
+      }
+
+      #savedGreeting {
+        font-size: 30px;
+        cursor: pointer;
+      }
+
+      /* Todo */
       .todo-input-wrapper {
         position: relative;
 
         width: 60%;
 
-        margin-top: 20px;
+        margin: 30px auto 0 auto;
       }
 
-      /* 입력창 */
       #todoInput {
         width: 100%;
 
@@ -222,7 +233,6 @@
         padding-bottom: 10px;
       }
 
-      /* Todo List 글자 */
       .todo-label {
         position: absolute;
 
@@ -236,11 +246,8 @@
         color: rgba(255, 255, 255, 0.7);
 
         pointer-events: none;
-
-        transition: 0.3s;
       }
 
-      /* 입력 시 숨김 */
       #todoInput:focus + .todo-label,
       #todoInput:not(:placeholder-shown) + .todo-label {
         opacity: 0;
@@ -249,9 +256,13 @@
       #todoText {
         margin-top: 20px;
 
+        text-align: center;
+
         font-size: clamp(22px, 2.5vw, 42px);
 
         font-weight: bold;
+
+        cursor: pointer;
       }
 
       /* 명언 */
@@ -268,33 +279,6 @@
 
         text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
       }
-
-      /* 모바일 */
-      @media (max-width: 768px) {
-        .top-bar {
-          padding: 15px;
-        }
-
-        .left-menu {
-          gap: 20px;
-        }
-
-        .menu-item span {
-          font-size: 22px;
-        }
-
-        #focusTime {
-          font-size: 30px;
-        }
-
-        .weather {
-          font-size: 24px;
-        }
-
-        #question {
-          margin-top: 40px;
-        }
-      }
     </style>
   </head>
 
@@ -302,15 +286,12 @@
     <div class="wrapper">
       <!-- 상단 -->
       <div class="top-bar">
-        <!-- 왼쪽 -->
         <div class="left-menu">
-          <!-- 링크 -->
           <div class="menu-item" onclick="goToGitHubSite()">
             <span>🔗</span>
             <div>Links</div>
           </div>
 
-          <!-- Focus -->
           <div class="menu-item">
             <span>🎯</span>
             <div>Focus</div>
@@ -319,18 +300,14 @@
 
         <!-- 오른쪽 -->
         <div class="right-info">
-          <!-- Focused Today -->
           <div class="focus-box">
-            <!-- 이미지처럼 원형 -->
             <div class="focus-circle"></div>
 
-            <!-- 시간 -->
             <div id="focusTime">0m</div>
 
             <div class="focus-text">Focused Today</div>
           </div>
 
-          <!-- 날씨 -->
           <div class="weather-area">
             <div class="weather-box">
               <div class="weather-icon" id="weatherIcon">☀️</div>
@@ -347,16 +324,15 @@
       <div class="center-box">
         <div id="clock">00:00</div>
 
-        <div id="greetText">로딩 중...</div>
+        <div id="mainGreeting">로딩 중...</div>
 
-        <div id="question">
+        <div class="question-text">
           <span class="question-line"> What is your main goal for today? </span>
         </div>
-      </div>
 
-      <!-- 이름 -->
+        <!-- 이름 -->
         <div id="nameContainer">
-          <span id="nameQuestion"> What is your </span>
+          <span id="nameQuestion">What is your </span>
 
           <input
             type="text"
@@ -365,11 +341,8 @@
             onkeypress="saveName(event)"
           />
 
-          <p id="greetText" onclick="editName()" style="display: none"></p>
+          <p id="savedGreeting" onclick="editName()" style="display: none"></p>
         </div>
-
-        <!-- 질문 -->
-        <div id="question">What is your main goal for today?</div>
 
         <!-- Todo -->
         <div class="todo-input-wrapper">
@@ -380,114 +353,86 @@
             onkeypress="handleTodo(event)"
           />
 
-          <span class="todo-label"> Todo List </span>
+          <span class="todo-label">Todo List</span>
         </div>
 
-        <p id="todoText"></p>
+        <p id="todoText" onclick="resetTodo()"></p>
       </div>
-      
+
       <!-- 하단 명언 -->
       <div id="quote"></div>
     </div>
 
     <script>
-      // 깃허브사이트 이동
+      // GitHub 이동
       function goToGitHubSite() {
         window.location.href = "https://github.com/";
       }
 
-      /* 이름 */
-    function loadName() {
+      // 이름 불러오기
+      function loadName() {
+        const savedName = localStorage.getItem("username");
 
-      const savedName =
-        localStorage.getItem("username");
+        const questionText = document.getElementById("nameQuestion");
+        const input = document.getElementById("nameInput");
+        const greet = document.getElementById("savedGreeting");
 
-      const questionText =
-        document.getElementById("nameQuestion");
+        if (savedName) {
+          questionText.style.display = "none";
+          input.style.display = "none";
 
-      const input =
-        document.getElementById("nameInput");
+          greet.style.display = "block";
 
-      const greet =
-        document.getElementById("greetText");
+          updateGreeting(savedName);
+        } else {
+          questionText.style.display = "inline";
+          input.style.display = "inline-block";
 
-      if (savedName) {
-
-        questionText.style.display = "none";
-
-        input.style.display = "none";
-
-        greet.style.display = "block";
-
-        updateGreeting(savedName);
-
-      } else {
-
-        questionText.style.display = "inline";
-
-        input.style.display = "inline-block";
-
-        greet.style.display = "none";
-      }
-    }
-
-    function saveName(event) {
-
-      if (event.key === "Enter") {
-
-        const nameValue = event.target.value;
-
-        if (nameValue.trim() !== "") {
-
-          localStorage.setItem(
-            "username",
-            nameValue
-          );
-
-          loadName();
+          greet.style.display = "none";
         }
       }
-    }
 
-    function editName() {
+      // 이름 저장
+      function saveName(event) {
+        if (event.key === "Enter") {
+          const nameValue = event.target.value;
 
-      localStorage.removeItem("username");
+          if (nameValue.trim() !== "") {
+            localStorage.setItem("username", nameValue);
 
-      loadName();
-
-      document
-        .getElementById("nameInput")
-        .focus();
-    }
-
-    function updateGreeting(name) {
-
-      const hours =
-        new Date().getHours();
-
-      let greeting = "";
-
-      if (hours < 12) {
-
-        greeting = "Good morning";
-
-      } else if (hours < 18) {
-
-        greeting = "Good afternoon";
-
-      } else {
-
-        greeting = "Good evening";
+            loadName();
+          }
+        }
       }
 
-      document.getElementById(
-        "greetText"
-      ).innerHTML =
-        `${greeting}, <span class="name-highlight">${name}</span>.`;
-    }
+      // 이름 수정
+      function editName() {
+        localStorage.removeItem("username");
 
-      // 배경화면 자동 변경 추가
+        loadName();
 
+        document.getElementById("nameInput").focus();
+      }
+
+      // 인사말 업데이트
+      function updateGreeting(name) {
+        const hours = new Date().getHours();
+
+        let greeting = "";
+
+        if (hours < 12) {
+          greeting = "Good morning";
+        } else if (hours < 18) {
+          greeting = "Good afternoon";
+        } else {
+          greeting = "Good evening";
+        }
+
+        document.getElementById("savedGreeting").innerHTML =
+          `${greeting}, ${name}.`;
+      }
+
+      // 배경 이미지
       const backgroundImages = [
         "star.jpg",
         "starscloud.jpg",
@@ -502,16 +447,12 @@
       let currentBackgroundIndex = 0;
 
       function changeBackground() {
-        currentBackgroundIndex++;
-
-        if (currentBackgroundIndex >= backgroundImages.length) {
-          currentBackgroundIndex = 0;
-        }
+        currentBackgroundIndex =
+          (currentBackgroundIndex + 1) % backgroundImages.length;
 
         document.body.style.backgroundImage = `url("${backgroundImages[currentBackgroundIndex]}")`;
       }
 
-      // 5초마다 자동 변경
       setInterval(changeBackground, 5000);
 
       // 시계
@@ -525,18 +466,17 @@
 
         document.getElementById("clock").textContent = `${hours}:${minutes}`;
 
-        // 인사말
         let greeting = "";
 
         if (hours < 12) {
-          greeting = "Good morning, 닉네임.";
+          greeting = "Good morning";
         } else if (hours < 18) {
-          greeting = "Good afternoon, 닉네임.";
+          greeting = "Good afternoon";
         } else {
-          greeting = "Good evening, 닉네임.";
+          greeting = "Good evening";
         }
 
-        document.getElementById("greetText").textContent = greeting;
+        document.getElementById("mainGreeting").textContent = greeting;
       }
 
       updateClock();
@@ -547,11 +487,10 @@
       function showRandomQuote() {
         const quotes = [
           "꿈을 계속 간직하고 있으면 반드시 실현할 때가 온다 - 괴테",
-          "시간은 말로써 나타낼 수 없을 만큼 멋진 만물으 소재이다 - 아널드 버넷",
-          "시간이 덜어주거나 부드럽게 해주지 않는 슬픔이란 하나도 없다 - 키케로",
-          "The only way to do great work is to love what you do (번역 : 위대한 일을 하는 유일한 방법은 당신이 하는 일을 사랑하는 것이다.) - Steave Jobs",
-          " 끔은 노력을 가능하게 만들고, 노력은 그 꿈을 가능하게 만든다. - 폴 포츠",
-          "포기하지 말고 희망을 잃지 말며 자신을 저버리지 말아라. - 크리스토퍼 리브",
+          "시간은 말로써 나타낼 수 없을 만큼 멋진 만물의 소재이다 - 아널드 버넷",
+          "시간이 덜어주거나 부드럽게 해주지 않는 슬픔은 없다 - 키케로",
+          "The only way to do great work is to love what you do - Steve Jobs",
+          "꿈은 노력을 가능하게 만들고 노력은 꿈을 가능하게 만든다 - 폴 포츠",
         ];
 
         const randomIndex = Math.floor(Math.random() * quotes.length);
@@ -576,77 +515,60 @@
 
       setInterval(updateFocusTime, 60000);
 
-      /* Todo */
-    function getTodo() {
+      // Todo
+      function getTodo() {
+        const p = document.getElementById("todoText");
 
-      let p =
-        document.getElementById("todoText");
+        const wrapper = document.querySelector(".todo-input-wrapper");
 
-      let wrapper =
-        document.querySelector(".todo-input-wrapper");
+        const savedTodo = localStorage.getItem("todo");
 
-      let savedTodo =
-        localStorage.getItem("todo");
+        if (savedTodo) {
+          p.textContent = savedTodo;
 
-      if (savedTodo) {
+          p.style.display = "block";
 
-        p.textContent = savedTodo;
+          wrapper.style.display = "none";
+        } else {
+          p.style.display = "none";
 
-        p.style.display = "block";
-
-        wrapper.style.display = "none";
-
-      } else {
-
-        p.style.display = "none";
-
-        wrapper.style.display = "block";
+          wrapper.style.display = "block";
+        }
       }
-    }
 
-    function setTodo() {
+      function setTodo() {
+        const input = document.getElementById("todoInput");
 
-      let input =
-        document.getElementById("todoInput");
+        const todoValue = input.value;
 
-      let todoValue =
-        input.value;
+        if (todoValue.trim() !== "") {
+          localStorage.setItem("todo", todoValue);
 
-      if (todoValue.trim() !== "") {
+          getTodo();
+        }
+      }
 
-        localStorage.setItem(
-          "todo",
-          todoValue
-        );
+      function handleTodo(event) {
+        if (event.key === "Enter") {
+          setTodo();
+        }
+      }
+
+      function resetTodo() {
+        localStorage.removeItem("todo");
+
+        document.getElementById("todoInput").value = "";
 
         getTodo();
       }
-    }
 
-    function handleTodo(event) {
-
-      if (event.key === "Enter") {
-        setTodo();
-      }
-    }
-
-    function resetTodo() {
-
-      localStorage.removeItem("todo");
-
-      document.getElementById(
-        "todoInput"
-      ).value = "";
+      loadName();
 
       getTodo();
-    }
 
-    loadName();
-
-    getTodo();
-    
       // 날씨
       const temperature = 24;
+
       const weatherType = "sunny";
 
       document.getElementById("weather").textContent = `${temperature}°`;
